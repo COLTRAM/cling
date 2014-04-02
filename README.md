@@ -6,11 +6,13 @@ https://github.com/4thline/cling
 Mods
 ---------------------
 
-* Addition of a ApplicationURLHeader
+* Addition of a ApplicationURLHeader as clone of LocationHeader
 
 * Modification of RemoteDevice to store the Application URL information
 
 * Modification of RetrieveRemoteDescriptors to get the info from the header and put it in the RemoteDevice
+
+* Modification of UpnpHeader to take ApplicationURLHeader into account in the parsing
 
 Usage
 ---------------------
