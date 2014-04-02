@@ -60,6 +60,8 @@ public abstract class UpnpHeader<T> {
         HOST("HOST", HostHeader.class),
         SERVER("SERVER", ServerHeader.class),
         LOCATION("LOCATION", LocationHeader.class),
+        // JCDufourd: added to deal with DIAL device discovery
+        APPLICATIONURL("APPLICATION-URL", ApplicationURLHeader.class),
         MAX_AGE("CACHE-CONTROL", MaxAgeHeader.class),
         USER_AGENT("USER-AGENT", UserAgentHeader.class),
         CONTENT_TYPE("CONTENT-TYPE", ContentTypeHeader.class),

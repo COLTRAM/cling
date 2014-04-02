@@ -34,6 +34,8 @@ import org.fourthline.cling.model.message.StreamRequestMessage;
 import org.fourthline.cling.model.message.StreamResponseMessage;
 import org.fourthline.cling.model.message.UpnpHeaders;
 import org.fourthline.cling.model.message.UpnpRequest;
+import org.fourthline.cling.model.message.header.ApplicationURLHeader;
+import org.fourthline.cling.model.message.header.UpnpHeader;
 import org.fourthline.cling.model.meta.Icon;
 import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.model.meta.RemoteService;
@@ -159,6 +161,16 @@ public class RetrieveRemoteDescriptors implements Runnable {
             );
             return;
         }
+
+        // JCDufourd: added to deal with DIAL device discovery
+        UpnpHeaders deviceDescMsgHeaders = deviceDescMsg.getHeaders();
+        if (deviceDescMsgHeaders.containsKey(UpnpHeader.Type.APPLICATIONURL)) {
+            // this remote device is a DIAL device, not really UPnP
+            ApplicationURLHeader h =
+                    (ApplicationURLHeader)deviceDescMsgHeaders.getFirstHeader(UpnpHeader.Type.APPLICATIONURL);
+            rd.setDIALApplicationURL(h.getValue());
+        }
+        //JCDufourd: end of addition
 
         if (deviceDescMsg.getOperation().isFailed()) {
             log.warning(

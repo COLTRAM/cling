@@ -28,10 +28,8 @@ import org.seamless.util.URIUtil;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * The metadata of a device that was discovered on the network.
@@ -39,6 +37,9 @@ import java.util.List;
  * @author Christian Bauer
  */
 public class RemoteDevice extends Device<RemoteDeviceIdentity, RemoteDevice, RemoteService> {
+
+    // JCDufourd: added to deal with DIAL device discovery
+    final private static Logger log = Logger.getLogger(RemoteDevice.class.getName());
 
     public RemoteDevice(RemoteDeviceIdentity identity) throws ValidationException {
         super(identity);
@@ -209,4 +210,18 @@ public class RemoteDevice extends Device<RemoteDeviceIdentity, RemoteDevice, Rem
         return find(udn, this);
     }
 
+    // JCDufourd: added to deal with DIAL device discovery
+    private static HashMap<UDN, URL> DIALApplicationURLs = new HashMap<UDN, URL>();
+    public void setDIALApplicationURL(URL url) {
+        UDN u = getIdentity().getUdn();
+        if (DIALApplicationURLs.containsKey(u)) {
+            if (url != null && !url.toString().equals(DIALApplicationURLs.get(u).toString()))
+            log.severe("UDN " + u + " already associated " + url + " " + DIALApplicationURLs.get(u));
+            return;
+        }
+        DIALApplicationURLs.put(u, url);
+    }
+    public URL getDIALApplicationURL() {
+        return DIALApplicationURLs.get(getIdentity().getUdn());
+    }
 }
